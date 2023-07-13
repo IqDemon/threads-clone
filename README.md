@@ -1,1 +1,1 @@
-# thereads-clone
+# threads-clone
