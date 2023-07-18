@@ -35,7 +35,7 @@ module.exports = async function (req, res) {
   const payload = JSON.parse(req.payload)
   console.log('payload:', payload) 
   const response = await users.get(payload['owner_id'])
-  console.log('response:', response)
+  console.log('response1:', response)
 
 
   const userData = {

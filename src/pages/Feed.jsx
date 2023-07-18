@@ -9,12 +9,15 @@ import {
 } from "../appwriteConfig";
 import { Query, ID } from "appwrite";
 import { Image } from "react-feather";
+import {useAuth} from "../context/AuthContext"
 
 const Feed = () => {
   const [threads, setThreads] = useState([]);
   const [threadBody, setThreadBody] = useState("");
   const [threadImage, setThreadImage] = useState(null);
   const fileRef = useRef(null);
+
+  const { user } = useAuth();
 
   useEffect(() => {
     getThreads();
@@ -32,9 +35,9 @@ const Feed = () => {
   const handleThreadSubmit = async (e) => {
     e.preventDefault();
     const payload = {
-      owner_id: "64b0f803f2f39b57a7ba",
-      body: threadBody,
-      image: threadImage,
+      "owner_id": user.$id,
+      "body": threadBody,
+      "image": threadImage,
     };
     const response = await database.createDocument(
       DEV_DB_ID,
@@ -62,13 +65,11 @@ const Feed = () => {
       ID.unique(),
       fileObj
     );
-  const imagePreview = storage.getFilePreview(BUCKET_ID_IMAGES, response.$id);
-  console.log(imagePreview);
-  setThreadImage(imagePreview.href);
-  console.log(threadImage)
+    const imagePreview = storage.getFilePreview(BUCKET_ID_IMAGES, response.$id);
+
+    setThreadImage(imagePreview.href);
+
   };
-
-
 
   return (
     <div className="container max-w-[600px] mx-auto">
